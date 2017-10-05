@@ -56,8 +56,8 @@
 								echo $rows[$i][$j];
 							}
 								else{
-									echo $rows[$i][$j];
-								?><input type = "submit" name = "<?php echo $rows[$i][$j]?>" value="viewq"><?php
+									//echo $rows[$i][$j];
+								?><input type = "submit" name = "<?php echo $rows[$i][$j]?>" value="view"><?php
 								}
 								
 								?> </th>
