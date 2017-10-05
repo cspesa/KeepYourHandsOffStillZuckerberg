@@ -74,7 +74,36 @@
 		
 	}
 	
+	function searchPopulateTable($conn, $sql){
+		$postIDs = [];
+		$result = mysqli_query($conn, $sql);
 	
+
+//mysqli_num_rows gets the number of rows in a result
+		if (gettype($result) != "boolean" ) {
+    
+	    // output data of each row. 
+		////mysqli_fetch_assoc below returns an associative array that corresponds to the fetched row or NULL if there are no more rows.
+		$bucket = [];
+		$count = 0;
+		while($row = mysqli_fetch_assoc($result)) 
+		{
+			array_push($postIDs, $row["id"]);
+			$date = $row["date"];
+			$date = substr($date,0,2) . "/" . substr($date,2,2) . "/" .substr($date,4,2);
+			$temp =  [$date,$row["rating"],$row["title"],$row["author"],$row["id"]];
+		//print_r($temp);
+			array_push($bucket, $temp);
+       // array_push($bucket,[$row["date"],$row["rating"],$row["title"],$author["author"]]);
+			$count++;
+    	}
+
+	$head = ["Date", "Rating", "Title", "Author", "Comments"];
+	make_tableButtons($head, $bucket);
+	
+	}
+		return $postIDs;
+	}
 	
 	
 	?>
