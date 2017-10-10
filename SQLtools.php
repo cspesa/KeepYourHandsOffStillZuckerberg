@@ -105,6 +105,45 @@
 		return $postIDs;
 	}
 	
+	function make_table($header, $rows){
+	
+		?>
+		<style>
+		table, th, td {
+    	border: 1px solid blue;
+		}
+		</style>
+		<table style="width:100%">
+  			<tr>
+   				<?php
+					foreach($header as $x){
+						?>
+    					<th><?php echo $x ?></th>
+					<?php } ?>
+  			</tr>
+  			<?php for($i = 0; $i < count($rows); $i++){
+						?>
+						<tr>
+							<?php for($j = 0; $j < count($rows[$i]); $j++){
+							
+							?>
+							<th><?php 
+								echo $rows[$i][$j];
+								
+								?> </th>
+						<?php } ?>
+							
+						</tr>
+						
+						
+					<?php } ?>
+						
+		</table>
+		
+		<?php
+		
+	}
+	
 	
 	?>
 
