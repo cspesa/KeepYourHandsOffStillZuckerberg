@@ -1,8 +1,6 @@
 
 <?php
-   session_start();
-   
-   if(session_destroy()) {
-      header("Location: homepage.php");
-   }
+
+setcookie("username", $myusername, time() - 3600);
+header("Location: homepage.php");
 ?>

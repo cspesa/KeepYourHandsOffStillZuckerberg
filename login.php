@@ -28,7 +28,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
 
 			if ( $row[ "username" ] == $myusername and $row[ "password" ] == $mypassword ) {
 
-				$_SESSION[ 'login_user' ] = $myusername;
+				setcookie("username", $myusername, time() + 3600);
 				$conn->close();
 				header( "location: homepage.php" );
 
