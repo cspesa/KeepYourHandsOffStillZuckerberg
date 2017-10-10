@@ -15,9 +15,13 @@
 
 	<div>
 		<p>
-			<lable for="profilepic"> Choose a profile picture: </lable>
-			<input type="" name="fileToUpload" id="fileToUpload">
-<!--			<input type="submit" value="Upload Image" name="submit3">-->
+			<lable for="pic"> Choose a profile picture: </lable>
+			<select name="pic">
+			<option value="pic1.jpeg">pic1</option>
+			<option value="pic2.jpeg">pic2</option>
+			<option value="pic3.jpeg">pic3</option>
+			<option value="pic4.jpeg">pic4</option>
+			</select>
 		</p>
 	</div>
 
@@ -59,6 +63,7 @@
 </fieldset>
 
 <?php
+
 include( "SQLtools.php" );
 $servername = "localhost";
 $username = "a290";
@@ -75,6 +80,7 @@ mysqli_select_db( $conn, "MessageBoard" );
 // creates new account
 if ( isset( $_POST[ "submit" ] ) ) {
 
+	$myprofilepic = mysqli_real_escape_string( $db, $_POST[ "pic" ] );
 	$myusername = mysqli_real_escape_string( $db, $_POST[ "username" ] );
 	$mypassword = mysqli_real_escape_string( $db, $_POST[ "password" ] );
 	$myfirstname = mysqli_real_escape_string( $db, $_POST[ "fname" ] );
@@ -86,21 +92,18 @@ if ( isset( $_POST[ "submit" ] ) ) {
 	$sql = "SELECT * FROM users where username = '$myusername'";
 	$result = mysqli_query( $conn, $sql );
 
-	//$count = 0;
-
 	if ( mysqli_num_rows( $result ) > 0 ) {
 
 		$error = "Error: THIS USERNAME IS USED.";
 		echo $error . "";
 	} else {
 		// insert user to database
-		$sql1 = "INSERT INTO users (fname, lname, username, password, email, banned, admin) VALUES ('$myfirstname', '$mylastname', '$myusername', '$mypassword', '$myemail', '$ban', 0)";
+		$sql1 = "INSERT INTO users (fname, lname, username, password, email, banned, picture, admin) VALUES ('$myfirstname', '$mylastname', '$myusername', '$mypassword', '$myemail', '$ban', '$myprofilepic', 0)";
 
 		if ( $conn->query( $sql1 ) == TRUE ) {
 
 			echo "Your account has been generated successfully.<br>";
 
-			//$_SESSION[ 'login_user' ] = $myusername;
 			setcookie("username", $myusername);
 			header( "location: homepage.php" );
 
