@@ -7,6 +7,12 @@
 
 <?php
 	
+
+		
+	
+	
+	
+	
 	function connectSQL($servername, $username, $password){
 		return mysqli_connect($servername, $username, $password);
 	}
@@ -16,19 +22,6 @@
 		return trim(trim(trim(trim(strip_tags($input), "\""),"_"), " "),"-");
 	}
 	
-	function saveRecord($fname, $lname, $number, $conn){
-		
-	$sql = "INSERT INTO book (fname, lname, number)
-			VALUES (". "\"$fname\"".",". "\"$lname\"".", ".$number.")";
-		
-	if (mysqli_query($conn, $sql)) {
-    	echo "New record added!";
-	} else {
-    echo "Error: Your record could not be added at this time, please try again later";
-		return false;
-	}
-	return true;
-	}
 	
 	function make_tableButtons($header, $rows){
 	
@@ -106,6 +99,15 @@
 	}
 	
 	function make_table($header, $rows){
+			$servername = "localhost";
+	$username = "a290";
+	$password = "a290php";	
+	$conn = connectSQL($servername, $username, $password);
+	if (!$conn) {
+		die("Connection failed: " . mysqli_connect_error());
+
+}
+mysqli_select_db($conn, "MessageBoard");
 	
 		?>
 		<style>
@@ -128,8 +130,19 @@
 							
 							?>
 							<th><?php 
+							
+								if($j < (count($rows[$i]) - 1)){
 								echo $rows[$i][$j];
-								
+								}
+								else{
+									
+									$sql = "SELECT * FROM users as a WHERE a.username = \"".$rows[$i][$j]."\""; 
+									//echo $sql . "   "; 
+									$result = mysqli_query($conn, $sql);
+									$row = mysqli_fetch_assoc($result);
+									//echo "<img src=\"search.png\" width=\"10\" height=\"10\">";
+									echo $row["picture"];
+								}
 								?> </th>
 						<?php } ?>
 							

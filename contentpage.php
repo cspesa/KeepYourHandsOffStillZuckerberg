@@ -5,11 +5,29 @@
 <title>Untitled Document</title>
 </head>
 
+
 <body>
 <form method="post" >
+<h1 style="color:#1CA1A8;"> <img src="search.png" width="33" height="34"> MyMessageBoard</h1>
 
+<?php if(isset($_COOKIE["username"])){
+	
+	echo "<h3 style=\"color: green;\"> ".$_COOKIE["username"]." is logged in </h3>";
+	echo "<input type = \"submit\" name = \"profile\" value=\"Profile\">";
+	echo "<input type = \"submit\" name = \"logout\" value=\"Logout\">";
+	
+}
+	else {
+		
+	echo "<input type = \"submit\" name = \"login\" value=\"Login\"></br>";	
+		
+	}
+	
+	?>
 
-<h3>Search Posts</h3> 
+<fieldset>
+
+<legend>Search Posts</legend> 
 <input type="text" name = "searchbar">
 <select name="searchterm"> 
 <option>author</option>
@@ -18,8 +36,12 @@
 <option>rating</option>
 </select>  
 	<input type = "submit" name = "search" value="Search">	</br>
-	<input type = "submit" name = "return" value="Return to Homepage">	
+	<input type = "submit" name = "return" value="Return to Homepage">	</br>
+<style>
+</style>
+</fieldset>
 
+<fieldset>
 <?php
 	if(isset($_COOKIE["postID"])){
 	$id = (int)$_COOKIE["postID"];
@@ -39,10 +61,22 @@ mysqli_select_db($conn, "MessageBoard");
 	$result = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_assoc($result);
 	//echo $row["title"];
-	echo "<h2>".$row["title"]."</h2>";
-	echo"<input type = \"submit\" name = \"articles\" value=\"articles\">";
+
+	$rating = (int)$row["rating"];
+	if($rating > 0){
+		$rColor = "Green";
+		
+	}
+	else{
+		$rColor = "Red";
+	}
+	echo "<legend><h2>".$row["title"]."</h2></legend>";
 	echo "<p>".$row["content"]."</p>";
-	echo "<p style=\"color:red;\"> Posted by: ".$row["author"]."</p>";
+	echo "<p style=\"color:blue;\"> Posted by: ".$row["author"]."</p>";
+	echo "<h2 style= \"color:".$rColor.";\">".$rating." people like this post</h2>";
+	echo"<input type = \"submit\" name = \"upvote\" style= \"color:green;\" value=\"Upvote\">";
+	echo"<input type = \"submit\" name = \"downvote\" style= \"color:red;\" value=\"Downvote\">";
+	
 	}
 	
 	?>
@@ -66,12 +100,54 @@ $sql = "Select * From comments as a WHERE a.pointer = ".$id;
 		//echo $row["author"];
 		array_push($records, $temp);
 	}
-	print_r($records);
+	//print_r($records);
 	make_table(["Date","Comment","Author"],$records);
+	
+
 	
 
 }
 
+	
+if(isset($_COOKIE["username"])){
+		?>
+	
+	</br>
+	<textarea rows=2 name ="comment" size=50></textarea>
+	<input type="submit" name="submitcomment" value="comment">
+	
+	
+	<?php
+	
+	if(isset($_POST["upvote"])){
+		$sql = "UPDATE posts SET rating = ". (1 + (int)$rating) . " WHERE id = ".$id ;
+		$result = mysqli_query($conn, $sql);
+		header("Location: contentpage.php");
+		echo $sql;
+	}
+	else if(isset($_POST["downvote"])){
+		$sql = "UPDATE posts SET rating = ". ((int)$rating - 1) . " WHERE id = ".$id ;
+		$result = mysqli_query($conn, $sql);
+		header("Location: contentpage.php");
+		echo "downvoted";
+	}
+	
+	
+}
+else{
+	echo "Login to comment and rate";
+}
+	
+if(isset($_POST["submitcomment"])){
+	$date = date("m d y");
+	$date = (int)str_replace(" ", "",$date);
+	$sql = "INSERT INTO comments (`pointer`, `date`, `content`, `author`) VALUES (".$id.",".$date.",\"".$_POST["comment"]."\",\"".$_COOKIE["username"]."\")";
+	$result = mysqli_query($conn, $sql);
+	header("Location: contentpage.php");
+	echo $sql;
+	
+	
+}
 	
 if(isset($_POST["search"])){
 		//echo "search" .  $_POST["searchbar"];
@@ -88,10 +164,24 @@ if(isset($_POST["search"])){
 		
 	}
 	
+if(isset($_POST["login"])){
+	header("Location: login.php");
+}
+
+if(isset($_POST["logout"])){
+	echo "tried to logout";
+	setcookie("username","",time()-3600);
+	header("Location: contentpage.php");
+}
+
+if(isset($_POST["profile"])){
+	header("Location: user_profile.php");
+}
+	
 	
 ?>
 	
-	
+</fieldset>
 	
 </form>
 

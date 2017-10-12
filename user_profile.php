@@ -1,7 +1,7 @@
 
 <?php
-setcookie("username", $myusername, time() + 3600);
-
+//setcookie("username", $myusername, time() + 3600);
+$myusername = $_COOKIE["username"];
 include( "SQLtools.php" );
 $servername = "localhost";
 $username = "a290";
@@ -28,7 +28,7 @@ $user = mysqli_query( $conn, $myusername );
 $pwd = mysqli_query( $conn, $mypassword );
 $email = mysqli_query( $conn, $myemail );
 $pic = mysqli_query( $conn, $mypicture );
-$admin = mysql_query( $conn, $myadmin );
+$admin = mysqli_query( $conn, $myadmin );
 
 if( $admin != 0){
 ?>

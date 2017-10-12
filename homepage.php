@@ -8,6 +8,22 @@
 <form method="post" >
 
 <h1 style="color:#1CA1A8;"> <img src="search.png" width="33" height="34"> MyMessageBoard</h1>
+
+<?php if(isset($_COOKIE["username"])){
+	
+	echo "<h3 style=\"color: green;\"> ".$_COOKIE["username"]." is logged in </h3>";
+	echo "<input type = \"submit\" name = \"profile\" value=\"Profile\">";
+	echo "<input type = \"submit\" name = \"logout\" value=\"Logout\"></br>";
+	
+}
+	else {
+		
+	echo "<input type = \"submit\" name = \"login\" value=\"Login\"></br>";	
+		
+	}
+	
+	?>
+
 <h3>Search Posts</h3> 
 <input type="text" name = "searchbar">
 <select name="searchterm"> 
@@ -98,7 +114,20 @@ $sql = "Select * From (Select * From posts ORDER BY date DESC) as a ORDER BY a.r
 		header("Location: catpage.php");
 		break;
 	}
+	if(isset($_POST["login"])){
+		header("Location: login.php");
 	}
+
+	if(isset($_POST["logout"])){
+		echo "tried to logout";
+		setcookie("username","",time()-3600);
+		header("Location: homepage.php");
+	}
+
+	if(isset($_POST["profile"])){
+		header("Location: user_profile.php");
+	}
+}
 	
 	
 	
