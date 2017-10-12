@@ -12,7 +12,7 @@
 <fieldset>
 
 	<legend>Create User Profile</legend>
-
+	<form method="post" >
 	<div>
 		<p>
 			<lable for="pic"> Choose a profile picture: </lable>
@@ -59,7 +59,7 @@
 			<input type="submit" name="cancel" value="Cancel">
 		</p>
 	</div>
-
+</form>
 </fieldset>
 
 <?php
@@ -80,12 +80,12 @@ mysqli_select_db( $conn, "MessageBoard" );
 // creates new account
 if ( isset( $_POST[ "submit" ] ) ) {
 
-	$myprofilepic = mysqli_real_escape_string( $db, $_POST[ "pic" ] );
-	$myusername = mysqli_real_escape_string( $db, $_POST[ "username" ] );
-	$mypassword = mysqli_real_escape_string( $db, $_POST[ "password" ] );
-	$myfirstname = mysqli_real_escape_string( $db, $_POST[ "fname" ] );
-	$mylastname = mysqli_real_escape_string( $db, $_POST[ "lname" ] );
-	$myemail = mysqli_real_escape_string( $db, $_POST[ "email" ] );
+	$myprofilepic = mysqli_real_escape_string( $conn, $_POST[ "pic" ] );
+	$myusername = mysqli_real_escape_string( $conn, $_POST[ "username" ] );
+	$mypassword = mysqli_real_escape_string( $conn, $_POST[ "password" ] );
+	$myfirstname = mysqli_real_escape_string( $conn, $_POST[ "fname" ] );
+	$mylastname = mysqli_real_escape_string( $conn, $_POST[ "lname" ] );
+	$myemail = mysqli_real_escape_string( $conn, $_POST[ "email" ] );
 	$ban = 0;
 
 	//mysqli_select_db($db, "MessageBoard");
