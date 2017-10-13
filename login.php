@@ -12,7 +12,7 @@
 include( "config.php" );
 session_start();
 
-if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
+if ( isset( $_POST[ "submit" ] ) ) {
 
 	$myusername = mysqli_real_escape_string( $db, $_POST[ "username" ] );
 	$mypassword = mysqli_real_escape_string( $db, $_POST[ "password" ] );
@@ -28,7 +28,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
 
 			if ( $row[ "username" ] == $myusername and $row[ "password" ] == $mypassword ) {
 
-				setcookie("username", $myusername, time() + 3600);
+				setcookie( "username", $myusername, time() + 3600 );
 				$conn->close();
 				header( "location: homepage.php" );
 
@@ -41,6 +41,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
 		}
 
 	}
+
+} else if ( isset( $_POST[ "register" ] ) ) {
+
+	header( "location:create_profile.php" );
 
 }
 ?>
@@ -80,7 +84,14 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == "POST" ) {
 				<form action="" method="post">
 					<label>UserName  :</label><input type="text" name="username" class="box"/><br/><br/>
 					<label>Password  :</label><input type="password" name="password" class="box"/><br/><br/>
-					<input type="submit" value=" Submit "/><br/>
+					<div>
+						<p>
+							<input type="submit" name="submit" value=" Submit "/><br/>
+						</p>
+						<p>
+							<input type="submit" name="register" value=" Register "/><br/>
+						</p>
+					</div>
 				</form>
 
 			</div>

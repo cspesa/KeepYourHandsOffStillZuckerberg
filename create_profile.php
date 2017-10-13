@@ -12,54 +12,63 @@
 <fieldset>
 
 	<legend>Create User Profile</legend>
-	<form method="post" >
-	<div>
+	<form method="post">
+		<div>
+			<p>
+				<lable for="pic"> Choose a profile picture: </lable>
+				<select name="pic">
+
+
+
+					<option value="pic1.jpeg" data-imagesrc="https://cdn0.iconfinder.com/data/icons/leisure-icons-rounded/110/Magic-Bunny-512.png">bunny</option>
+
+					<option value="pic2.jpeg" data-imagesrc="https://image.flaticon.com/icons/svg/29/29662.svg">cat</option>
+					<option value="pic1.jpeg" data-imagesrc="http://icons.iconarchive.com/icons/martin-berube/flat-animal/256/chicken-icon.png">chicken</option>
+					<option value="pic1.jpeg" data-imagesrc="https://cdn4.iconfinder.com/data/icons/tail-waggers/120/pug-512.png">dog</option>
+
+
+
+
+
+				</select>
+			</p>
+		</div>
+
+
+		<div>
+			<p>
+				<label for="name">Username:</label>
+				<input type="text" name="username">
+			</p>
+		</div>
+
 		<p>
-			<lable for="pic"> Choose a profile picture: </lable>
-			<select name="pic">
-			<option value="pic1.jpeg">pic1</option>
-			<option value="pic2.jpeg">pic2</option>
-			<option value="pic3.jpeg">pic3</option>
-			<option value="pic4.jpeg">pic4</option>
-			</select>
+			<label for="password">Password:</label>
+			<input type="password" name="password">
 		</p>
-	</div>
 
-
-	<div>
 		<p>
-			<label for="name">Username:</label>
-			<input type="text" name="username">
+			<label for="fname">First Name:</label>
+			<input type="text" name="fname">
 		</p>
-	</div>
-
-	<p>
-		<label for="password">Password:</label>
-		<input type="password" name="password">
-	</p>
-
-	<p>
-		<label for="fname">First Name:</label>
-		<input type="text" name="fname">
-	</p>
-	<p>
-		<label for="lname">Last Name:</label>
-		<input type="text" name="lname">
-	</p>
-	<div>
 		<p>
-			<label for="email">E-mail Address:</label>
-			<input type="text" name="email">
+			<label for="lname">Last Name:</label>
+			<input type="text" name="lname">
 		</p>
-	</div>
+		<div>
+			<p>
+				<label for="email">E-mail Address:</label>
+				<input type="text" name="email">
+			</p>
+		</div>
 
-	<div>
-		<p>
-			<input type="submit" name="submit" value="Submit">
-			<input type="submit" name="cancel" value="Cancel">
-		</p>
-	</div>
-</form>
+		<div>
+			<p>
+				<input type="submit" name="submit" value="Submit">
+				<input type="submit" name="cancel" value="Cancel">
+			</p>
+		</div>
+	</form>
 </fieldset>
 
 <?php
@@ -89,7 +98,7 @@ if ( isset( $_POST[ "submit" ] ) ) {
 	$ban = 0;
 
 	//mysqli_select_db($db, "MessageBoard");
-	$sql = "SELECT * FROM users where username = '$myusername'";
+	$sql = "SELECT * FROM users WHERE username = '$myusername'";
 	$result = mysqli_query( $conn, $sql );
 
 	if ( mysqli_num_rows( $result ) > 0 ) {
@@ -104,8 +113,9 @@ if ( isset( $_POST[ "submit" ] ) ) {
 
 			echo "Your account has been generated successfully.<br>";
 
-			setcookie("username", $myusername);
-			header( "location: homepage.php" );
+			setcookie( "username", $myusername );
+			//header( "location: homepage.php" );
+			header( "location: user_profile.php" );
 
 		} else {
 			echo "Error: " . $sql2 . "<br>" . $conn->error;
@@ -114,7 +124,7 @@ if ( isset( $_POST[ "submit" ] ) ) {
 	}
 
 	$conn->close();
-	
+
 
 }
 
@@ -128,4 +138,3 @@ if ( isset( $_POST[ "cancel" ] ) ) {
 
 
 ?>
-

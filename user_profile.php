@@ -1,65 +1,75 @@
-
 <?php
 //setcookie("username", $myusername, time() + 3600);
-$myusername = $_COOKIE["username"];
-include( "SQLtools.php" );
-$servername = "localhost";
-$username = "a290";
-$password = "a290php";
+if ( !isset( $_COOKIE[ "username" ] ) ) {
+	echo '<script language="javascript">';
+	echo 'alert("Please log in first!")';
+	echo '</script>';
 
-$conn = connectSQL( $servername, $username, $password );
-if ( !$conn ) {
-	die( "Connection failed: " . mysqli_connect_error() );
-}
+	header( "location: login.php" );
 
-mysqli_select_db( $conn, "MessageBoard" );
-$myfname = "SELECT fname FROM users WHERE username = '$myusername'";
-$mylname = "SELECT lname FROM users WHERE username = '$myusername'";
-$myusername = "SELECT username FROM users WHERE username = '$myusername'";
-$mypassword = "SELECT password FROM users WHERE username = '$myusername'";
-$myemail = "SELECT email FROM users WHERE username = '$myusername'";
-$mypicture = "SELECT picture FROM users WHERE username = '$myusername'";
-$myadmin = "SELECT admin FROM users WHERE username = '$myusername'";
-
-//mysqli_query performs a query against the database.
-$firstname = mysqli_query( $conn, $myfname );
-$lastname = mysqli_query( $conn, $mylname );
-$user = mysqli_query( $conn, $myusername );
-$pwd = mysqli_query( $conn, $mypassword );
-$email = mysqli_query( $conn, $myemail );
-$pic = mysqli_query( $conn, $mypicture );
-$admin = mysqli_query( $conn, $myadmin );
-
-if( $admin != 0){
-?>
+} else {
 	
-	<div>
-		<p>
-			<input type="submit" name="ban" value="Admin Page">
-		</p>
-	</div>
+	include( "SQLtools.php" );
+	$servername = "localhost";
+	$username = "a290";
+	$password = "a290php";
+
+	$conn = connectSQL( $servername, $username, $password );
+	if ( !$conn ) {
+		die( "Connection failed: " . mysqli_connect_error() );
+	}
 	
-	<?php
+	$myusername = $_COOKIE[ "username" ];
+
+
+	mysqli_select_db( $conn, "MessageBoard" );
+
+	$sql = "SELECT * From users WHERE username = '$myusername'";
+	$result = mysqli_query($conn, $sql);
 	
-	if ( isset( $_POST[ "ban" ] ) ) {
+	$arr = [];
+	$count = 0;
+	while($rows = mysqli_fetch_assoc($result)){
 		
-		header( "location: admin.php" );
+		$arr = [$rows["fname"], $rows["lname"], $rows["username"], $rows["password"], $rows["email"], $rows["banned"], $rows["picture"], $rows["admin"]];
+		
+	}
+	
+	$myfname = $arr[0];
+	$mylname = $arr[1];
+	$myuser = $arr[2];
+	$mypassword = $arr[3];
+	$myemail = $arr[4];
+	$myban = $arr[5];
+	$mypicture = $arr[6];
+	$myadmin = $arr[7];
+
+
+	if ( isset( $_POST[ "submit" ] ) ) {
+
+		if ( !empty( $_POST[ "password" ] ) ) {
+
+			$newpassword = mysqli_real_escape_string( $conn, $_POST[ "password" ]);
+			$query1 = "SELECT * FROM users WHERE username = '$myusername'";
+			$result1 = mysqli_query( $conn, $query1);
+			echo $newpassword;
+			if ( mysqli_num_rows( $result1 ) > 0 ) {
+				$query = "UPDATE users SET password = '$newpassword' WHERE username = '$myusername'";
+				$changepassword = mysqli_query($conn, $query);
+				header("Refresh:0");
+			}
+		}
+
+
 
 	}
-			
-}
+	
+	
+		if ( isset( $_POST[ "back" ] ) ) {
 
-if ( isset( $_POST[ "submit" ] ) ) {
+			header( "location: homepage.php" );
 
-	if ( !empty( $_POST[ "password" ] ) ) {
-
-		$newpassword = $_POST[ "password" ];
-		$mynewpassword = "UPDATE users SET password = $newpassword WHERE username = '$myusername'";
-
-	}
-
-	header( "location: homepage.php" );
-
+		}
 }
 
 
@@ -75,7 +85,7 @@ if ( isset( $_POST[ "submit" ] ) ) {
 
 </html>
 
-
+<form method="post" >
 <fieldset>
 
 	<legend>User Profile</legend>
@@ -84,34 +94,70 @@ if ( isset( $_POST[ "submit" ] ) ) {
 
 	<p>
 		<label for="name">Username:</label>
-		<input type="text" name="username" value='$user' readonly>
-	</p>
-
-	<p>
-		<label for="password">Change password:</label>
-		<input type="password" name="password">
+<!--		<input type="text" name="username" value='$myuser' readonly>-->
+	<?php
+		echo $myuser;
+		?>
 	</p>
 
 	<p>
 		<label for="fname">First Name:</label>
-		<input type="text" name="fname" value='$firstname' readonly>
+			<?php
+		echo $myfname;
+		?>
 	</p>
 	<p>
 		<label for="lname">Last Name:</label>
-		<input type="text" name="lname" value='$lastname' readonly>
+			<?php
+		echo $mylname;
+		?>
 	</p>
 
 	<p>
 		<label for="email">E-mail Address:</label>
-		<input type="text" name="email" value='$email' readonly>
+			<?php
+		echo $myemail;
+		?>
+	</p>
+	
+	<p>
+		<label for="password">Change password:</label>
+		<input type="password" name="password">
+		
 	</p>
 
 	<div>
 		<p>
-			<input type="submit" name="submit" value="Submit">
+			<input type="submit" name="submit" value="Change Password">
+			<input type="submit" name="back" value="Back to Homepage">
+			
+			
+			<?php
+		
+			if ( $myadmin != 0 ) {
+		?>
+			<form method="post" >
+			<p>
+				<input type="submit" name="admin" value="Go To Admin Page">
+			</p>
+			</form>
+
+		<?php
+
+		if ( isset( $_POST[ "admin" ] ) ) {
+
+			header( "location: admin.php" );
+
+		}
+
+	}
+		
+		?>
+			
 		</p>
+		
 	</div>
 
 </fieldset>
 
-
+</form>
