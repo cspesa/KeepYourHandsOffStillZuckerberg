@@ -9,11 +9,42 @@
 
 <h1 style="color:#1CA1A8;"> <img src="search.png" width="33" height="34"> MyMessageBoard</h1>
 
-<?php if(isset($_COOKIE["username"])){
+<?php 
+	
+	include("SQLtools.php");
+$servername = "localhost";
+$username = "a290";
+$password = "a290php";
+$postIDs = [];
+
+$conn = connectSQL($servername, $username, $password);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+
+}
+mysqli_select_db($conn, "MessageBoard");
+	
+	
+	if(isset($_COOKIE["username"])){
 	
 	echo "<h3 style=\"color: green;\"> ".$_COOKIE["username"]." is logged in </h3>";
 	echo "<input type = \"submit\" name = \"profile\" value=\"Profile\">";
-	echo "<input type = \"submit\" name = \"logout\" value=\"Logout\"></br>";
+	echo "<input type = \"submit\" name = \"logout\" value=\"Logout\">";
+	
+	
+	
+	$sql = "SELECT * FROM users as a WHERE a.username = \"".$_COOKIE["username"]."\""; 
+	//echo $sql . "   "; 
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);	
+	if($row["banned"] == 0){
+	
+	echo "<input type = \"submit\" name = \"makepost\" value=\"Add Post\"></br>";
+	
+	}
+	if($row["banned"] == 1){
+	echo "You have been banned. Please contact an admin to rate, comment or post";
+}
 	
 }
 	else {
@@ -45,22 +76,11 @@
 	<h2>Top Posts</h2>
 <?php
 	
-include("SQLtools.php");
-$servername = "localhost";
-$username = "a290";
-$password = "a290php";
-$postIDs = [];
 
-$conn = connectSQL($servername, $username, $password);
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-
-}
-mysqli_select_db($conn, "MessageBoard");
 	
 
 
-$sql = "Select * From (Select * From posts ORDER BY date DESC) as a ORDER BY a.rating DESC";
+$sql = "Select * From (Select * From posts ORDER BY rating DESC) as a ORDER BY a.date DESC";
 //mysqli_query performs a query against the database.
 	$postIDs = searchPopulateTable($conn, $sql);
 	
@@ -126,6 +146,11 @@ $sql = "Select * From (Select * From posts ORDER BY date DESC) as a ORDER BY a.r
 
 	if(isset($_POST["profile"])){
 		header("Location: user_profile.php");
+	}
+		
+	if(isset($_POST["makepost"])){
+		echo "making posts";
+		header("Location: makepost.php");
 	}
 }
 	

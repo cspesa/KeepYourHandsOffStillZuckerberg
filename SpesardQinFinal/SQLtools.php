@@ -140,8 +140,8 @@ mysqli_select_db($conn, "MessageBoard");
 									//echo $sql . "   "; 
 									$result = mysqli_query($conn, $sql);
 									$row = mysqli_fetch_assoc($result);
-									//echo "<img src=\"search.png\" width=\"10\" height=\"10\">";
-									echo $row["picture"];
+									echo "<img src=\"".$row["picture"]."\" width=\"30\" height=\"30\">";
+									echo "   ".$rows[$i][$j];
 								}
 								?> </th>
 						<?php } ?>

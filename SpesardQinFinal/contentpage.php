@@ -55,6 +55,10 @@
 
 }
 mysqli_select_db($conn, "MessageBoard");
+	
+		
+	
+		
 		
 	$sql = "SELECT * FROM posts as a WHERE a.id = " .$id.""; 
 	//echo $sql . "   "; 
@@ -110,6 +114,14 @@ $sql = "Select * From comments as a WHERE a.pointer = ".$id;
 
 	
 if(isset($_COOKIE["username"])){
+	
+	
+	
+	$sql = "SELECT * FROM users as a WHERE a.username = \"".$_COOKIE["username"]."\""; 
+	//echo $sql . "   "; 
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_assoc($result);	
+	if($row["banned"] == 0){
 		?>
 	
 	</br>
@@ -133,6 +145,13 @@ if(isset($_COOKIE["username"])){
 	}
 	
 	
+}
+
+if($row["banned"] == 1){
+	echo "You have been banned. Please contact an admin to rate, comment or post";
+}
+
+
 }
 else{
 	echo "Login to comment and rate";

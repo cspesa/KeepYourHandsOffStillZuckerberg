@@ -2,7 +2,7 @@
 
 <body>
 
-	<h1 style="color:#1CA1A8;"> <img src="../search.png" width="33" height="34" alt=""/> MyMessageBoard</h1>
+	<h1 style="color:#1CA1A8;"> <img src="search.png" width="33" height="34" alt=""/> MyMessageBoard</h1>
 
 </body>
 
@@ -20,11 +20,11 @@
 
 
 
-					<option value="pic1.jpeg" data-imagesrc="https://cdn0.iconfinder.com/data/icons/leisure-icons-rounded/110/Magic-Bunny-512.png">bunny</option>
+					<option value="pic1.jpg" data-imagesrc="https://cdn0.iconfinder.com/data/icons/leisure-icons-rounded/110/Magic-Bunny-512.png">bunny</option>
 
-					<option value="pic2.jpeg" data-imagesrc="https://image.flaticon.com/icons/svg/29/29662.svg">cat</option>
-					<option value="pic1.jpeg" data-imagesrc="http://icons.iconarchive.com/icons/martin-berube/flat-animal/256/chicken-icon.png">chicken</option>
-					<option value="pic1.jpeg" data-imagesrc="https://cdn4.iconfinder.com/data/icons/tail-waggers/120/pug-512.png">dog</option>
+					<option value="pic2.jpg" data-imagesrc="https://image.flaticon.com/icons/svg/29/29662.svg">cat</option>
+					<option value="pic3.jpg" data-imagesrc="http://icons.iconarchive.com/icons/martin-berube/flat-animal/256/chicken-icon.png">chicken</option>
+					<option value="pic4.jpg" data-imagesrc="https://cdn4.iconfinder.com/data/icons/tail-waggers/120/pug-512.png">dog</option>
 
 
 

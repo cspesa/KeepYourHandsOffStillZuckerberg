@@ -2,7 +2,7 @@
 
 <body>
 
-	<h1 style="color:#1CA1A8;"> <img src="../search.png" width="33" height="34" alt=""/> MyMessageBoard</h1>
+	<h1 style="color:#1CA1A8;"> <img src="search.png" width="33" height="34" alt=""/> MyMessageBoard</h1>
 
 </body>
 
